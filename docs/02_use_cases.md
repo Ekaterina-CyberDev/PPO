@@ -22,35 +22,29 @@
   - Изменить стоимость номера.  
   - Управлять пользователями системы.  
 
-@startuml  
-left to right direction  
-actor "Администратор (Reception)" as Admin  
-actor "Горничная (Housekeeping)" as Maid    
-actor "Менеджер" as Manager  
-actor "Клиент" as Client  
+flowchart LR
+    %% Актеры
+    Admin((Администратор))
+    Maid((Горничная))
+    Manager((Менеджер))
 
-rectangle "Система управления отелем" {  
-  usecase "Бронирование номера" as UC1  
-  usecase "Регистрация заезда (Check-in)" as UC2  
-  usecase "Регистрация выезда (Check-out)" as UC3  
-  usecase "Просмотр статуса номеров" as UC4  
-  usecase "Обновление статуса уборки" as UC5  
-  usecase "Формирование отчетов" as UC6  
-  usecase "Управление тарифами" as UC7  
-  usecase "Ведение картотеки гостей" as UC8  
-}
+    %% Система
+    subgraph System [Система управления отелем]
+        UC1(Бронирование номера)
+        UC2(Регистрация заезда)
+        UC3(Регистрация выезда)
+        UC4(Просмотр статуса номеров)
+        UC5(Обновление статуса уборки)
+        UC6(Формирование отчетов)
+    end
 
-Admin --> UC1  
-Admin --> UC2  
-Admin --> UC3  
-Admin --> UC4  
-Admin --> UC8  
-
-Maid --> UC4  
-Maid --> UC5  
-
-Manager --> UC6  
-Manager --> UC7  
-
-Client --> UC1 : (через сайт/телефон)  
-@enduml  
+    %% Связи
+    Admin --> UC1
+    Admin --> UC2
+    Admin --> UC3
+    Admin --> UC4
+    
+    Maid --> UC4
+    Maid --> UC5
+    
+    Manager --> UC6
