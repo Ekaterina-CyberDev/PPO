@@ -20,7 +20,7 @@
 10. Конец процесса.  
 
 
-# Процесс заселения гостя
+# Процесс заселения гостя  
 ```mermaid
 flowchart TD
     Start((Начало)) --> Step1["Подход гостя к стойке"]
@@ -57,7 +57,7 @@ flowchart TD
     style Decision3 fill:#ff9,stroke:#333
 
 
-# Выселение
+# Выселение  
 ```mermaid
 flowchart TD
     Start((Начало)) --> Step1["Гость подходит к стойке"]
@@ -85,8 +85,8 @@ flowchart TD
     style Decision2 fill:#ff9,stroke:#333
 
 
-# Уборка номера:
-
+# Уборка номера:  
+```mermaid
 flowchart TD
     Start((Начало)) --> Step1["Получение задания от системы"]
     Step1 --> Step2["Горничная идет в номер"]
