@@ -55,3 +55,53 @@ flowchart TD
     style Decision1 fill:#ff9,stroke:#333
     style Decision2 fill:#ff9,stroke:#333
     style Decision3 fill:#ff9,stroke:#333  
+```
+
+# Выселение
+```mermaid
+flowchart TD
+    Start((Начало)) --> Step1["Гость подходит к стойке"]
+    Step1 --> Step2["Администратор запрашивает номер"]
+    Step2 --> Step3["Проверка задолженности"]
+    
+    Step3 --> Decision1{"Есть долг?"}
+    Decision1 -- Да --> Step4["Погашение задолженности"]
+    Decision1 -- Нет --> Step5["Проверка мини-бара"]
+    
+    Step4 --> Step5
+    Step5 --> Decision2{"Мини-бар использован?"}
+    
+    Decision2 -- Да --> Step6["Добавление стоимости в счет"]
+    Decision2 -- Нет --> Step7["Возврат ключа"]
+    
+    Step6 --> Step7
+    Step7 --> Step8["Смена статуса номера на 'Грязный'"]
+    Step8 --> Step9["Формирование итогового счета"]
+    Step9 --> End((Конец))
+
+    style Start fill:#f96,stroke:#333
+    style End fill:#f96,stroke:#333
+    style Decision1 fill:#ff9,stroke:#333
+    style Decision2 fill:#ff9,stroke:#333
+```
+
+# Уборка номера:  
+```mermaid
+flowchart TD
+    Start((Начало)) --> Step1["Получение задания от системы"]
+    Step1 --> Step2["Горничная идет в номер"]
+    Step2 --> Step3["Проверка статуса номера"]
+    
+    Step3 --> Decision1{"Номер занят?"}
+    Decision1 -- Да (Гость в номере) --> Step4["Отложить уборку"]
+    Decision1 -- Нет --> Step5["Влажная уборка"]
+    
+    Step4 --> End((Конец))
+    Step5 --> Step6["Замена белья и полотенец"]
+    Step6 --> Step7["Проверка мини-бара"]
+    Step7 --> Step8["Отметка в системе: 'Убран'"]
+    Step8 --> End
+
+    style Start fill:#f96,stroke:#333
+    style End fill:#f96,stroke:#333
+    style Decision1 fill:#ff9,stroke:#333
