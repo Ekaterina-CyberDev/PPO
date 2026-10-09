@@ -54,11 +54,8 @@ flowchart TD
     style End fill:#f96,stroke:#333
     style Decision1 fill:#ff9,stroke:#333
     style Decision2 fill:#ff9,stroke:#333
-    style Decision3 fill:#ff9,stroke:#333
+    style Decision3 fill:#ff9,stroke:#333  
 
-
-# Выселение  
-```mermaid
 flowchart TD
     Start((Начало)) --> Step1["Гость подходит к стойке"]
     Step1 --> Step2["Администратор запрашивает номер"]
