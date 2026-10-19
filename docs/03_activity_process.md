@@ -34,13 +34,18 @@ flowchart TD
     Decision2 -- Нет --> Step5["Отказ в заселении"]
     Step5 --> End((Конец))
     
-    Decision2 -- Да --> Step6["Выбор номера"]
+    Decision2 -- Да --> StepReg["Регистрация новой брони"]
+    StepReg --> Step6["Выбор номера"]
     
-    Step3 --> Decision3{"Номер готов?"}
+    Step3 --> Decision3{"Номер готов? (Чистый)"}
     Step6 --> Decision3
     
     Decision3 -- Нет (Грязный/Ремонт) --> Step7["Предложить другой номер"]
-    Step7 --> End
+    
+    %% Исправление преподавателя: цикл, если гость согласен
+    Step7 --> Decision4{"Гость согласен на альтернативу?"}
+    Decision4 -- Нет --> End
+    Decision4 -- Да --> Step6
     
     Decision3 -- Да --> Step8["Ввод паспортных данных"]
     Step8 --> Step9["Оформление договора"]
@@ -49,12 +54,12 @@ flowchart TD
     Step11 --> Step12["Смена статуса номера на 'Занят'"]
     Step12 --> End
 
-    %% Стили для красоты
     style Start fill:#f96,stroke:#333
     style End fill:#f96,stroke:#333
     style Decision1 fill:#ff9,stroke:#333
     style Decision2 fill:#ff9,stroke:#333
-    style Decision3 fill:#ff9,stroke:#333  
+    style Decision3 fill:#ff9,stroke:#333
+    style Decision4 fill:#ff9,stroke:#333 
 ```
 
 # Выселение
@@ -62,19 +67,20 @@ flowchart TD
 flowchart TD
     Start((Начало)) --> Step1["Гость подходит к стойке"]
     Step1 --> Step2["Администратор запрашивает номер"]
-    Step2 --> Step3["Проверка задолженности"]
     
-    Step3 --> Decision1{"Есть долг?"}
-    Decision1 -- Да --> Step4["Погашение задолженности"]
-    Decision1 -- Нет --> Step5["Проверка мини-бара"]
-    
-    Step4 --> Step5
+    %% Преподаватель сказал: мини-бар проверяем до итогового счета
+    Step2 --> Step5["Проверка мини-бара"]
     Step5 --> Decision2{"Мини-бар использован?"}
     
     Decision2 -- Да --> Step6["Добавление стоимости в счет"]
-    Decision2 -- Нет --> Step7["Возврат ключа"]
+    Decision2 -- Нет --> Step3["Проверка задолженности"]
     
-    Step6 --> Step7
+    Step6 --> Step3
+    Step3 --> Decision1{"Есть долг?"}
+    Decision1 -- Да --> Step4["Погашение задолженности"]
+    Decision1 -- Нет --> Step7["Возврат ключа"]
+    
+    Step4 --> Step7
     Step7 --> Step8["Смена статуса номера на 'Грязный'"]
     Step8 --> Step9["Формирование итогового счета"]
     Step9 --> End((Конец))
