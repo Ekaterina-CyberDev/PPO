@@ -10,7 +10,10 @@
 3.  [Диаграмма деятельности (Activity Diagram)](docs/03_activity_process.md)  
 4.  [Анализ предметной области (Термины и правила)](docs/04_domain_analysis.md)
 5.  [Спецификация требований (Lean Feature Spec)](docs/05_requirements_spec.md)
+6.  [Диаграмма классов (Доменная модель)](docs/06_class_diagram.md)
+7.  [Диаграмма состояний (State Machine)](docs/07_state_machine.md)
 
 ## Технологии  
 *   Документация: Markdown  
-*   Диаграммы: Mermaid  
+*   Диаграммы: Mermaid
+*   
