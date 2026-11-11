@@ -1,62 +1,70 @@
 # Диаграмма классов (Доменная модель)
 
-Диаграмма описывает статическую структуру бизнес-сущностей гостиничного комплекса, их атрибуты, методы и связи, согласно лекции 4.
+**Цель:** Показать статическую структуру бизнес-сущностей, их атрибуты и связи, без привязки к технической реализации (БД, фреймворки).
+
+### Основные сущности и связи:
+*   **Гость (Guest)** может иметь много **Броней (Booking)** (связь 1 ко многим).
+*   **Номер (Room)** относится к определенной **Категории (RoomType)**.
+*   **Бронь (Booking)** связывает одного Гостя и один Номер на определенные даты.
+*   **Проживание (Stay)** является фактом заселения по Брони.
+*   **Платеж (Payment)** привязан к Проживанию.
 
 ```mermaid
 classDiagram
-    direction TB
-
     class Guest {
-        +int id
+        +String guestId
         +String fullName
         +String passportData
         +String phone
         +String email
-    }
-
-    class Room {
-        +int id
-        +String roomNumber
-        +int floor
-        +int capacity
-        +RoomStatus status
-        +changeStatus(RoomStatus newStatus)
+        +createBooking()
     }
 
     class RoomType {
-        +int id
+        +String typeId
         +String name
         +String description
-        +decimal basePrice
+        +Money basePrice
+    }
+
+    class Room {
+        +String roomNumber
+        +Integer floor
+        +Integer capacity
+        +RoomStatus status
+        +changeStatus()
     }
 
     class Booking {
-        +int id
+        +String bookingId
         +Date checkInDate
         +Date checkOutDate
         +BookingStatus status
-        +confirm()
         +cancel()
-        +checkIn()
+        +confirm()
     }
 
     class Stay {
-        +int id
+        +String stayId
         +DateTime actualCheckIn
         +DateTime actualCheckOut
-        +decimal totalAmount
+        +Money totalAmount
         +checkOut()
     }
 
     class Payment {
-        +int id
-        +Date date
-        +decimal amount
+        +String paymentId
+        +Date paymentDate
+        +Money amount
         +PaymentType type
         +PaymentStatus status
     }
 
-    %% Перечисления (Enums) для статусов
+    class Money {
+        +Decimal amount
+        +String currency
+    }
+
     class RoomStatus {
         <<enumeration>>
         FREE
@@ -68,33 +76,19 @@ classDiagram
     class BookingStatus {
         <<enumeration>>
         CREATED
-        ACTIVE
+        CONFIRMED
         CANCELLED
         NO_SHOW
         COMPLETED
     }
 
-    class PaymentType {
-        <<enumeration>>
-        CASH
-        CARD
-    }
-
-    class PaymentStatus {
-        <<enumeration>>
-        PENDING
-        PAID
-        REFUNDED
-    }
-
     %% Связи
     Guest "1" --> "*" Booking : создает
-    Room "1" --> "*" Booking : бронируется
-    Room "1" --> "1" RoomType : имеет тип
-    
-    Booking "1" *-- "1" Stay : превращается в
-    Stay "1" *-- "*" Payment : включает
-    
-    %% Ограничения (бизнес-правила)
-    note for Room "Бизнес-правило: заселение только если status == FREE"
-    note for Booking "Бизнес-правило: отмена < 24ч = штраф"
+    Booking "*" --> "1" Room : бронирует
+    Room "*" --> "1" RoomType : относится к
+    Booking "1" --> "0..1" Stay : переходит в
+    Stay "1" --> "*" Payment : оплачивает
+    Room --> RoomStatus
+    Booking --> BookingStatus
+    RoomType *-- Money : содержит
+    Stay *-- Money : итоговая сумма
